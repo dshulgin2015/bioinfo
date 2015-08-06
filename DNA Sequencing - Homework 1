@@ -7,11 +7,23 @@ def naive_with_rc(p, t):
         for j in range(len(p)): # loop over characters
             if t[i+j] != p[j]: # compare characters of p
                 match = False
-                break
             if t[i+j] != p_rev[j]:  # compare characters reverse complement if p
                 match_rev = False
+            if(not (match or match_rev)):
                 break
         if match or match_rev:
+            occurrences.append(i)  # all chars matched; record
+    return occurrences
+
+def naive(p, t):
+    occurrences = []
+    for i in range(len(t) - len(p) + 1):  # loop over alignments
+        match = True
+        for j in range(len(p)):  # loop over characters
+            if t[i+j] != p[j]:  # compare characters
+                match = False
+                break
+        if match:
             occurrences.append(i)  # all chars matched; record
     return occurrences
 
@@ -47,7 +59,25 @@ def readFastq(filename):
     return sequences, qualities
 
 
-genome = readGenome('lambda_virus (1).fa')
-print len( genome)
+def leftmost_occur(p, t):
+    occurrences = []
+    p_rev = reverseComplement(p);
+    for i in range(len(t) - len(p) + 1):  # loop over alignments
+        match, match_rev = True, True
+        for j in range(len(p)): # loop over characters
+            if t[i+j] != p[j]: # compare characters of p
+                match = False
+            if t[i+j] != p_rev[j]:  # compare characters reverse complement if p
+                match_rev = False
+            if(not (match or match_rev)):
+                break
+        if match or match_rev:
+            return i  # all chars matched; record
+    return len(t)
 
-print len(naive_with_rc('AGGT', genome))
+genome = readGenome('lambda_virus (1).fa')
+
+print len(naive_with_rc('TTAA', genome))
+print len(naive('TTAA', genome))
+print leftmost_occur('ACTAAGT', genome)
+print leftmost_occur('AGTCGA', genome)
