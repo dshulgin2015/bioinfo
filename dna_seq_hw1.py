@@ -16,8 +16,10 @@ def naive_with_rc(p, t):
 
 def naive(p, t):
     occurrences = []
+    num_aligments = 0
     for i in range(len(t) - len(p) + 1):  # loop over alignments
         match = True
+        num_aligments += 1
         for j in range(len(p)):  # loop over characters
             if t[i+j] != p[j]:  # compare characters
                 match = False
