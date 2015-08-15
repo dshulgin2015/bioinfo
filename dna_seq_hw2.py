@@ -3,7 +3,9 @@ def boyer_moore(p, p_bm, t):
         p_bm=BoyerMoore object for p """
     i = 0
     occurrences = []
+    alignments = 0
     while i < len(t) - len(p) + 1:
+        alignments += 1
         shift = 1
         mismatched = False
         for j in range(len(p)-1, -1, -1):
@@ -18,7 +20,7 @@ def boyer_moore(p, p_bm, t):
             skip_gs = p_bm.match_skip()
             shift = max(shift, skip_gs)
         i += shift
-    return occurrences
+    return occurrences, alignments
 
 #Question 1: How many alignments does the naive exact matching algorithm 
 #            try when matching the string GGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGG (derived from human Alu sequences)
@@ -31,14 +33,22 @@ alignments = len(genome) - len('GGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGG'
 
 print alignments
 
-#Question 1: How many character comparisons does the naive exact matching algorithm 
+#Question 2: How many character comparisons does the naive exact matching algorithm 
 #            try when matching the string GGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGG (derived from human Alu sequences)
 #            to the excerpt of human chromosome 1?
-print alignments * len('GGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGG')
+#print alignments * len('GGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGG')
 
+
+#Question 3
+#How many alignments does Boyer-Moore 
+#try when matching the string GGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGG (derived from human Alu sequences)
+# to the excerpt of human chromosome 1?
 from bm_preproc import *
 
+
 # GCTAGCTCTACGAGTCTA
-p = 'TCAA'
+p = 'GGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGG'
 p_bm = BoyerMoore(p, alphabet='ACGT')
-print p_bm.bad_character_rule(2, 'T')
+occurrences, alignments = boyer_moore(p, p_bm, genome)
+print alignments
+#print p_bm.bad_character_rule(2, 'T')
