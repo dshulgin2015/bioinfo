@@ -55,6 +55,6 @@ genome = readGenome('chr1.GRCh38.excerpt.fasta')
 
 seqs, quals = readFastq('ERR266411_1.for_asm.fastq')
 
-print len(seqs)
+print seqs
 
 #Q4
