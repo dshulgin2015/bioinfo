@@ -55,6 +55,17 @@ genome = readGenome('chr1.GRCh38.excerpt.fasta')
 
 seqs, quals = readFastq('ERR266411_1.for_asm.fastq')
 
-print seqs
+#print seqs
 
 #Q4
+from index import *
+
+reads_k_mers = {}
+
+for read in seqs:
+    k_mers = Index(read,30).index
+    for i in k_mers:
+        reads_k_mers[i] = read
+        
+
+print len(reads_k_mers)
